@@ -1,0 +1,77 @@
+package com.example.journalism;
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    List<news> newsList;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        clik();
+    }
+    public void clik() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String path = "http://c.m.163.com/nc/article/list/T1348648650048/0-20.html";
+                String jsonString = HttpUtils.getJsonContent(path);
+                parseDiffJson(jsonString);
+            }
+        });
+        thread.start();
+
+    }
+    private void parseDiffJson(String json) {
+        try {
+            JSONObject jsonObject1 = new JSONObject(json);
+            JSONArray jsonArray = jsonObject1.getJSONArray("T1348648650048");
+            newsList = new ArrayList<news>();
+            news news1 = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                news1 = new news();
+                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                //取出name
+                String sname = jsonObject.getString("digest");
+                news1.setDigest(sname);
+                String jarray1 = jsonObject.getString("imgsrc");
+                news1.setTopic_background(jarray1);
+                String jarray2 = jsonObject.getString("replyCount");
+                news1.setReplyCount(jarray2);
+                newsList.add(news1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.e("tag",newsList+"");
+        handler.sendEmptyMessage(1);
+    }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            ListView l1 =(ListView) findViewById(R.id.l1);
+            l1.setAdapter(new NewsAdapter(newsList,MainActivity.this));
+        }
+    };
+}
