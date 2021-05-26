@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                String path = "http://c.m.163.com/nc/article/list/T1348648650048/0-20.html";
+                String path = "json数据网址";
+                //HttpUtils把网站的json数据解析给了jsonString
                 String jsonString = HttpUtils.getJsonContent(path);
+                
                 parseDiffJson(jsonString);
             }
         });
@@ -43,19 +45,23 @@ public class MainActivity extends AppCompatActivity {
     private void parseDiffJson(String json) {
         try {
             JSONObject jsonObject1 = new JSONObject(json);
-            JSONArray jsonArray = jsonObject1.getJSONArray("T1348648650048");
+            //获取JSONArray 
+            JSONArray jsonArray = jsonObject1.getJSONArray("根据json数据");
             newsList = new ArrayList<news>();
+            //news自定义的类
             news news1 = null;
             for (int i = 0; i < jsonArray.length(); i++) {
                 news1 = new news();
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                 //取出name
-                String sname = jsonObject.getString("digest");
+                String sname = jsonObject.getString("根据json数据");
+                //调用set方法把数据传入
                 news1.setDigest(sname);
-                String jarray1 = jsonObject.getString("imgsrc");
+                String jarray1 = jsonObject.getString("根据json数据");
                 news1.setTopic_background(jarray1);
-                String jarray2 = jsonObject.getString("replyCount");
+                String jarray2 = jsonObject.getString("根据json数据");
                 news1.setReplyCount(jarray2);
+                //把数据存入集合
                 newsList.add(news1);
             }
 
