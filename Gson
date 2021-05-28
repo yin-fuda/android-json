@@ -1,0 +1,55 @@
+//Gson使用，解析带数据头的数据
+//Gson gson = new Gson();
+//JavaBean bean = gson.fromJson(json,JavaBean.class);
+//ls = bean.getT1348648650048();
+
+public class JavaBean {
+    private List<ShuJu> T1348648650048;
+
+    public List<ShuJu> getT1348648650048() {
+        return T1348648650048;
+    }
+
+    public void setT1348648650048(List<ShuJu> t1348648650048) {
+        T1348648650048 = t1348648650048;
+    }
+
+    public class ShuJu{
+        private String digest;
+        private String imgsrc;
+        private String replyCount;
+
+        public void setTopic_background(String topic_background) {
+            this.imgsrc = topic_background;
+        }
+
+        public void setReplyCount(String replyCount) {
+            this.replyCount = replyCount;
+        }
+
+        public void setDigest(String digest) {
+            this.digest = digest;
+        }
+
+        public String getTopic_background() {
+            return imgsrc;
+        }
+
+        public String getReplyCount() {
+            return replyCount;
+        }
+
+        public String getDigest() {
+            return digest;
+        }
+
+        @Override
+        public String toString() {
+            return "ShuJu{" +
+                    "digest='" + digest + '\'' +
+                    ", topic_background='" + imgsrc + '\'' +
+                    ", replyCount='" + replyCount + '\'' +
+                    '}';
+        }
+    }
+}
